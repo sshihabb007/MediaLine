@@ -67,11 +67,11 @@ function renderGallery_sshihabb007() {
 // 3. Grid Controls
 window.setGridSize_sshihabb007 = function(size) {
     if (size === 'small') {
-        gallery_sshihabb007.className = "columns-2 sm:columns-3 md:columns-4 lg:columns-6 gap-2 space-y-2";
+        gallery_sshihabb007.className = "columns-3 sm:columns-4 md:columns-6 lg:columns-8 gap-1 space-y-1";
     } else if (size === 'medium') {
-        gallery_sshihabb007.className = "columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4";
+        gallery_sshihabb007.className = "columns-2 sm:columns-3 md:columns-4 lg:columns-6 gap-2 space-y-2";
     } else if (size === 'large') {
-        gallery_sshihabb007.className = "columns-1 md:columns-2 gap-6 space-y-6";
+        gallery_sshihabb007.className = "columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4";
     }
 }
 
