@@ -25,7 +25,7 @@ foreach ($files as $file) {
             if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
                 list($width, $height) = @getimagesize($sourcePath);
                 if ($width && $height) {
-                    $newWidth = 500;
+                    $newWidth = 250;
                     $newHeight = floor($height * ($newWidth / $width));
                     
                     $thumb = imagecreatetruecolor($newWidth, $newHeight);
@@ -34,15 +34,15 @@ foreach ($files as $file) {
                         imagesavealpha($thumb, true);
                         $source = @imagecreatefrompng($sourcePath);
                         if ($source) imagecopyresampled($thumb, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-                        if ($source) imagepng($thumb, $thumbPath, 5);
+                        if ($source) imagepng($thumb, $thumbPath, 8);
                     } else if ($ext === 'webp') {
                         $source = @imagecreatefromwebp($sourcePath);
                         if ($source) imagecopyresampled($thumb, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-                        if ($source) imagewebp($thumb, $thumbPath, 80);
+                        if ($source) imagewebp($thumb, $thumbPath, 60);
                     } else {
                         $source = @imagecreatefromjpeg($sourcePath);
                         if ($source) imagecopyresampled($thumb, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-                        if ($source) imagejpeg($thumb, $thumbPath, 70);
+                        if ($source) imagejpeg($thumb, $thumbPath, 60);
                     }
                     if (isset($thumb)) imagedestroy($thumb);
                     if (isset($source) && $source !== false) imagedestroy($source);

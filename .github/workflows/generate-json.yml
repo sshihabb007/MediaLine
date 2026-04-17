@@ -22,8 +22,8 @@ jobs:
               filename_sshihabb007=$(basename "$file_sshihabb007")
               if [ "$filename_sshihabb007" != ".gitkeep" ]; then
                 if [ ! -f "UPLOAD/thumbs/$filename_sshihabb007" ]; then
-                  echo "Generating thumb for $filename_sshihabb007"
-                  convert "$file_sshihabb007" -resize 500x -quality 70 "UPLOAD/thumbs/$filename_sshihabb007" || true
+                  echo "Generating optimized thumb for $filename_sshihabb007"
+                  convert "$file_sshihabb007" -thumbnail 250x -quality 60 -strip "UPLOAD/thumbs/$filename_sshihabb007" || true
                 fi
               fi
             fi
