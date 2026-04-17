@@ -38,11 +38,31 @@ function renderGallery_sshihabb007() {
     
     // Apply Sort filter
     const sortVal = sortFilter_sshihabb007.value;
-    allPhotos_sshihabb007.sort((a, b) => {
+    
+    let filteredPhotos_sshihabb007 = [...allPhotos_sshihabb007];
+    const nowTime = Math.floor(Date.now() / 1000);
+    const day = 86400;
+    
+    if (sortVal === '1week') {
+        filteredPhotos_sshihabb007 = filteredPhotos_sshihabb007.filter(p => (nowTime - p.timestamp) <= day * 7);
+    } else if (sortVal === '1month') {
+        filteredPhotos_sshihabb007 = filteredPhotos_sshihabb007.filter(p => (nowTime - p.timestamp) <= day * 30);
+    } else if (sortVal === '2months') {
+        filteredPhotos_sshihabb007 = filteredPhotos_sshihabb007.filter(p => (nowTime - p.timestamp) <= day * 60);
+    } else if (sortVal === '3months') {
+        filteredPhotos_sshihabb007 = filteredPhotos_sshihabb007.filter(p => (nowTime - p.timestamp) <= day * 90);
+    }
+
+    filteredPhotos_sshihabb007.sort((a, b) => {
         return sortVal === 'oldest' ? a.timestamp - b.timestamp : b.timestamp - a.timestamp;
     });
 
-    allPhotos_sshihabb007.forEach(photo_sshihabb007 => {
+    if (filteredPhotos_sshihabb007.length === 0) {
+        gallery_sshihabb007.innerHTML = '<p class="col-span-full text-center py-20 opacity-50">No photos match this filter.</p>';
+        return;
+    }
+
+    filteredPhotos_sshihabb007.forEach(photo_sshihabb007 => {
         // Fallback to original url if thumb_url is missing
         const imgSrc = photo_sshihabb007.thumb_url || photo_sshihabb007.url;
         const hdSrc = photo_sshihabb007.url;
