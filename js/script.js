@@ -10,6 +10,8 @@ const colCountDisplay_sshihabb007 = document.getElementById('colCountDisplay');
 const dateFilter_sshihabb007 = document.getElementById('dateFilter_sshihabb007');
 
 let allPhotos_sshihabb007 = [];
+let filteredPhotos_sshihabb007 = [];
+let currentLightboxIndex_sshihabb007 = 0;
 
 const gridClasses_sshihabb007 = {
     1: 'columns-1 gap-4 space-y-4',
@@ -58,7 +60,7 @@ function renderGallery_sshihabb007() {
     const sortVal = sortFilter_sshihabb007.value;
     const selectedDateStr = dateFilter_sshihabb007 ? dateFilter_sshihabb007.value : '';
     
-    let filteredPhotos_sshihabb007 = [...allPhotos_sshihabb007];
+    filteredPhotos_sshihabb007 = [...allPhotos_sshihabb007];
     const nowTime = Math.floor(Date.now() / 1000);
     const day = 86400;
 
@@ -128,9 +130,10 @@ function renderGallery_sshihabb007() {
             const imgSrc_sshihabb007 = encodePath(photo_sshihabb007.thumb_url || photo_sshihabb007.url);
             const hdSrc_sshihabb007 = encodePath(photo_sshihabb007.url);
             const tightGap = currentGridClass_sshihabb007.includes('gap-1');
+            const currentIndex = filteredPhotos_sshihabb007.indexOf(photo_sshihabb007);
 
             groupHTML_sshihabb007 += `
-                <div class="break-inside-avoid ${tightGap ? 'mb-1' : 'mb-2 md:mb-4'} group relative overflow-hidden rounded-xl bg-zinc-100 dark:bg-zinc-900 cursor-pointer" onclick="openLightbox_sshihabb007('${hdSrc_sshihabb007}')">
+                <div class="break-inside-avoid ${tightGap ? 'mb-1' : 'mb-2 md:mb-4'} group relative overflow-hidden rounded-xl bg-zinc-100 dark:bg-zinc-900 cursor-pointer" onclick="openLightbox_sshihabb007(${currentIndex})">
                     <img 
                         src="${imgSrc_sshihabb007}" 
                         onerror="this.onerror=null; this.src='${hdSrc_sshihabb007}';"
@@ -186,10 +189,26 @@ if (dateFilter_sshihabb007) {
 }
 
 // 5. Lightbox & Zoom Features
-window.openLightbox_sshihabb007 = function(hdSrc) {
-    lightboxImg_sshihabb007.src = hdSrc;
+window.openLightbox_sshihabb007 = function(index) {
+    currentLightboxIndex_sshihabb007 = index;
+    const photo = filteredPhotos_sshihabb007[index];
+    const encodePath = (path) => path.split('/').map(encodeURIComponent).join('/');
+    
+    lightboxImg_sshihabb007.src = encodePath(photo.url);
     lightbox_sshihabb007.classList.add('active');
     lightboxImg_sshihabb007.classList.remove('zoomed'); // reset zoom
+}
+
+// Next / Prev functions
+window.changePhoto_sshihabb007 = function(direction, event) {
+    event.stopPropagation(); // prevent closing lightbox
+    if(filteredPhotos_sshihabb007.length === 0) return;
+    
+    let newIndex = currentLightboxIndex_sshihabb007 + direction;
+    if (newIndex < 0) newIndex = filteredPhotos_sshihabb007.length - 1; // loop backwards
+    if (newIndex >= filteredPhotos_sshihabb007.length) newIndex = 0; // loop forwards
+    
+    openLightbox_sshihabb007(newIndex);
 }
 
 // Close when clicking outside image or X button
