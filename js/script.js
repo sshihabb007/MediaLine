@@ -133,6 +133,7 @@ function renderGallery_sshihabb007() {
                 <div class="break-inside-avoid ${tightGap ? 'mb-1' : 'mb-2 md:mb-4'} group relative overflow-hidden rounded-xl bg-zinc-100 dark:bg-zinc-900 cursor-pointer" onclick="openLightbox_sshihabb007('${hdSrc_sshihabb007}')">
                     <img 
                         src="${imgSrc_sshihabb007}" 
+                        onerror="this.onerror=null; this.src='${hdSrc_sshihabb007}';"
                         loading="lazy" 
                         alt="Gallery Upload"
                         class="w-full h-auto object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-75"
