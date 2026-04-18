@@ -124,8 +124,9 @@ function renderGallery_sshihabb007() {
         `;
         
         photos_sshihabb007.forEach(photo_sshihabb007 => {
-            const imgSrc_sshihabb007 = photo_sshihabb007.thumb_url || photo_sshihabb007.url;
-            const hdSrc_sshihabb007 = photo_sshihabb007.url;
+            const encodePath = (path) => path.split('/').map(encodeURIComponent).join('/');
+            const imgSrc_sshihabb007 = encodePath(photo_sshihabb007.thumb_url || photo_sshihabb007.url);
+            const hdSrc_sshihabb007 = encodePath(photo_sshihabb007.url);
             const tightGap = currentGridClass_sshihabb007.includes('gap-1');
 
             groupHTML_sshihabb007 += `

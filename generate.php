@@ -13,14 +13,15 @@ if (!is_dir($thumbDir)) {
 
 $files = array_diff(scandir($dir), array('.', '..', '.gitkeep', 'thumbs'));
 $json = [];
+$hasGD = function_exists('imagecreatetruecolor');
 
 foreach ($files as $file) {
     if (is_file($dir . $file)) {
         $sourcePath = $dir . $file;
         $thumbPath = $thumbDir . $file;
         
-        // Generate thumbnail if missing
-        if (!file_exists($thumbPath)) {
+        // Generate thumbnail if missing and GD is fully enabled
+        if (!file_exists($thumbPath) && $hasGD) {
             $ext = strtolower(pathinfo($sourcePath, PATHINFO_EXTENSION));
             if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
                 list($width, $height) = @getimagesize($sourcePath);
