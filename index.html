@@ -21,27 +21,34 @@
 </head>
 <body class="bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 min-h-screen">
 
-    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md px-6 py-4 border-b border-zinc-200 dark:border-zinc-800">
-        <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <h1 class="text-xl font-black tracking-widest uppercase">Media Line</h1>
-            <div class="flex items-center gap-4 flex-wrap justify-center">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md px-3 py-3 sm:px-6 sm:py-4 border-b border-zinc-200 dark:border-zinc-800">
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4 w-full">
+            <h1 class="text-lg sm:text-xl flex items-center font-black tracking-widest uppercase w-full justify-center sm:w-auto sm:justify-start">
+                Media Line
+                <span id="photoCount" class="text-xs sm:text-sm font-medium text-zinc-500 bg-zinc-100 dark:bg-zinc-900 px-2 py-0.5 sm:px-3 sm:py-1 rounded-full ml-2 hidden">0</span>
+            </h1>
+            <div class="flex items-center gap-1.5 sm:gap-4 flex-nowrap w-full sm:w-auto justify-between sm:justify-end">
                 
-                <div class="flex items-center bg-zinc-100 dark:bg-zinc-900 rounded-full border border-zinc-200 dark:border-zinc-800 p-1">
-                    <button class="px-3 py-1 rounded-full text-xs font-medium hover:bg-white dark:hover:bg-zinc-800 transition-colors" onclick="setGridSize_sshihabb007('small')">Grid S</button>
-                    <button class="px-3 py-1 rounded-full text-xs font-medium hover:bg-white dark:hover:bg-zinc-800 transition-colors" onclick="setGridSize_sshihabb007('medium')">Grid M</button>
-                    <button class="px-3 py-1 rounded-full text-xs font-medium hover:bg-white dark:hover:bg-zinc-800 transition-colors" onclick="setGridSize_sshihabb007('large')">Grid L</button>
+                <div class="flex items-center gap-1 sm:gap-3 bg-zinc-100 dark:bg-zinc-900 rounded-full border border-zinc-200 dark:border-zinc-800 px-2 py-1 sm:px-4 sm:py-2">
+                    <span class="text-[10px] sm:text-xs font-medium text-zinc-500 whitespace-nowrap">Grid <span id="colCountDisplay">6</span></span>
+                    <input type="range" id="columnSlider_sshihabb007" min="1" max="10" value="6" class="w-16 sm:w-20 md:w-24 h-1 bg-zinc-300 dark:bg-zinc-700 rounded-lg appearance-none cursor-pointer">
                 </div>
                 
-                <select id="sortFilter" class="bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-full px-4 py-2 text-sm font-medium outline-none">
-                    <option value="newest">Newest First</option>
+                <select id="sortFilter" class="bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-full px-2 py-1 sm:px-4 sm:py-2 text-[10px] sm:text-sm font-medium outline-none">
+                    <option value="newest">Recently Added</option>
                     <option value="oldest">Oldest First</option>
+                    <option value="today">Today (Last 24 Hrs)</option>
                     <option value="1week">Last 1 Week</option>
                     <option value="1month">Last 1 Month</option>
                     <option value="2months">Last 2 Months</option>
                     <option value="3months">Last 3 Months</option>
                 </select>
 
-                <button id="themeToggle" class="bg-zinc-100 dark:bg-zinc-900 px-4 py-2 rounded-full text-sm font-medium border border-zinc-200 dark:border-zinc-800 transition-all hover:scale-105">
+                <div class="relative flex items-center">
+                    <input type="date" id="dateFilter_sshihabb007" class="bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-full px-2 py-1 sm:px-3 sm:py-2 text-[10px] sm:text-sm font-medium outline-none cursor-pointer text-zinc-500 w-24 sm:w-auto">
+                </div>
+
+                <button id="themeToggle" class="bg-zinc-100 dark:bg-zinc-900 px-2 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium border border-zinc-200 dark:border-zinc-800 transition-all hover:scale-105 shrink-0">
                     <span class="dark:hidden">🌙</span>
                     <span class="hidden dark:inline">☀️</span>
                 </button>
@@ -50,8 +57,8 @@
     </nav>
 
     <main class="p-4 md:p-8">
-        <div id="gallery" class="columns-2 sm:columns-3 md:columns-4 lg:columns-6 gap-2 space-y-2">
-            <div id="loader" class="text-center py-20 opacity-50 w-full col-span-full">Scanning folder for new shots...</div>
+        <div id="gallery" class="flex flex-col space-y-8">
+            <div id="loader" class="text-center py-20 opacity-50 w-full">Scanning folder for new shots...</div>
         </div>
     </main>
 
