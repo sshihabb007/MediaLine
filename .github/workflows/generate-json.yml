@@ -32,23 +32,28 @@ jobs:
       - name: Generate JSON with Timestamps
         run: |
           echo "[" > photos.json
-          # Get files, sort by git commit time
-          files_sshihabb007=$(git ls-files UPLOAD/ | grep -v 'UPLOAD/thumbs/' | xargs -I{} git log -1 --format="%at {}" {} | sort -nr | cut -d' ' -f2-)
+          
+          git ls-files UPLOAD/ | grep -v 'UPLOAD/thumbs/' | xargs -d '\n' -I{} git log -1 --format="%at {}" {} | sort -nr | cut -d' ' -f2- > sorted_files_sshihabb007.txt
           
           first_sshihabb007=true
-          for file_sshihabb007 in $files_sshihabb007; do
+          while IFS= read -r file_sshihabb007; do
+            if [ -z "$file_sshihabb007" ]; then continue; fi
             filename_sshihabb007=$(basename "$file_sshihabb007")
             if [ "$filename_sshihabb007" = ".gitkeep" ]; then continue; fi
+            
             if [ "$first_sshihabb007" = true ]; then
               first_sshihabb007=false
             else
               echo "," >> photos.json
             fi
+            
             timestamp_sshihabb007=$(git log -1 --format=%ct "$file_sshihabb007")
             if [ -z "$timestamp_sshihabb007" ]; then timestamp_sshihabb007=$(date +%s); fi
             echo "  {\"url\": \"$file_sshihabb007\", \"thumb_url\": \"UPLOAD/thumbs/$filename_sshihabb007\", \"timestamp\": $timestamp_sshihabb007}" >> photos.json
-          done
+          done < sorted_files_sshihabb007.txt
+          
           echo "]" >> photos.json
+          rm sorted_files_sshihabb007.txt || true
 
       - name: Commit and Push
         run: |
