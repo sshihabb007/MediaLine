@@ -23,7 +23,7 @@ const gridClasses_sshihabb007 = {
     7: 'columns-3 sm:columns-5 md:columns-6 lg:columns-7 gap-2 space-y-2',
     8: 'columns-4 sm:columns-6 md:columns-7 lg:columns-8 gap-1 space-y-1',
     9: 'columns-4 sm:columns-6 md:columns-8 lg:columns-9 gap-1 space-y-1',
-   10: 'columns-5 sm:columns-7 md:columns-9 lg:columns-10 gap-1 space-y-1'
+    10: 'columns-5 sm:columns-7 md:columns-9 lg:columns-10 gap-1 space-y-1'
 };
 
 let currentGridClass_sshihabb007 = gridClasses_sshihabb007[6];
@@ -32,14 +32,14 @@ let currentGridClass_sshihabb007 = gridClasses_sshihabb007[6];
 async function initGallery_sshihabb007() {
     try {
         if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-            try { await fetch('generate.php?t=' + Date.now()); } catch(e) { }
+            try { await fetch('generate.php?t=' + Date.now()); } catch (e) { }
         }
 
         const response_sshihabb007 = await fetch('photos.json?t=' + Date.now());
         if (!response_sshihabb007.ok) throw new Error("JSON not found. Upload photos first!");
-        
+
         allPhotos_sshihabb007 = await response_sshihabb007.json();
-        
+
         if (allPhotos_sshihabb007.length === 0) {
             gallery_sshihabb007.innerHTML = '<p class="text-center py-20">No photos found in UPLOAD folder.</p>';
             return;
@@ -55,23 +55,23 @@ async function initGallery_sshihabb007() {
 // 2. Main Render Logic
 function renderGallery_sshihabb007() {
     gallery_sshihabb007.innerHTML = '';
-    
+
     // Apply Sort filter
     const sortVal = sortFilter_sshihabb007.value;
     const selectedDateStr = dateFilter_sshihabb007 ? dateFilter_sshihabb007.value : '';
-    
+
     filteredPhotos_sshihabb007 = [...allPhotos_sshihabb007];
     const nowTime = Math.floor(Date.now() / 1000);
     const day = 86400;
 
     if (selectedDateStr) {
         filteredPhotos_sshihabb007 = filteredPhotos_sshihabb007.filter(p => {
-             const d = new Date(p.timestamp * 1000);
-             const y = d.getFullYear();
-             const m = String(d.getMonth() + 1).padStart(2, '0');
-             const dayStr = String(d.getDate()).padStart(2, '0');
-             const pDateStr = `${y}-${m}-${dayStr}`;
-             return pDateStr === selectedDateStr;
+            const d = new Date(p.timestamp * 1000);
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, '0');
+            const dayStr = String(d.getDate()).padStart(2, '0');
+            const pDateStr = `${y}-${m}-${dayStr}`;
+            return pDateStr === selectedDateStr;
         });
     } else {
         if (sortVal === 'today') {
@@ -107,7 +107,7 @@ function renderGallery_sshihabb007() {
     filteredPhotos_sshihabb007.forEach(photo_sshihabb007 => {
         const dateObj_sshihabb007 = new Date(photo_sshihabb007.timestamp * 1000);
         const dateStr_sshihabb007 = dateObj_sshihabb007.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-        
+
         if (!groupedPhotos_sshihabb007[dateStr_sshihabb007]) {
             groupedPhotos_sshihabb007[dateStr_sshihabb007] = [];
         }
@@ -124,7 +124,7 @@ function renderGallery_sshihabb007() {
             </h2>
             <div class="gallery-group ${currentGridClass_sshihabb007}">
         `;
-        
+
         photos_sshihabb007.forEach(photo_sshihabb007 => {
             const encodePath = (path) => path.split('/').map(encodeURIComponent).join('/');
             const imgSrc_sshihabb007 = encodePath(photo_sshihabb007.thumb_url || photo_sshihabb007.url);
@@ -144,7 +144,7 @@ function renderGallery_sshihabb007() {
                 </div>
             `;
         });
-        
+
         groupHTML_sshihabb007 += `</div></div>`;
         gallery_sshihabb007.innerHTML += groupHTML_sshihabb007;
     }
@@ -156,14 +156,14 @@ if (columnSlider_sshihabb007) {
         const val = parseInt(e.target.value);
         if (colCountDisplay_sshihabb007) colCountDisplay_sshihabb007.innerText = val;
         currentGridClass_sshihabb007 = gridClasses_sshihabb007[val];
-        
+
         // Apply instantly to DOM
         document.querySelectorAll('.gallery-group').forEach(el => {
             el.className = `gallery-group ${currentGridClass_sshihabb007}`;
-            
+
             // Fix bottom margin gaps based on scale
             Array.from(el.children).forEach(child => {
-                if(val >= 8) {
+                if (val >= 8) {
                     child.classList.remove('mb-2', 'md:mb-4');
                     child.classList.add('mb-1');
                 } else {
@@ -183,31 +183,31 @@ sortFilter_sshihabb007.addEventListener('change', () => {
 
 if (dateFilter_sshihabb007) {
     dateFilter_sshihabb007.addEventListener('change', () => {
-        if(dateFilter_sshihabb007.value) sortFilter_sshihabb007.value = 'newest'; // reset sort logic fallback
+        if (dateFilter_sshihabb007.value) sortFilter_sshihabb007.value = 'newest'; // reset sort logic fallback
         renderGallery_sshihabb007();
     });
 }
 
 // 5. Lightbox & Zoom Features
-window.openLightbox_sshihabb007 = function(index) {
+window.openLightbox_sshihabb007 = function (index) {
     currentLightboxIndex_sshihabb007 = index;
     const photo = filteredPhotos_sshihabb007[index];
     const encodePath = (path) => path.split('/').map(encodeURIComponent).join('/');
-    
+
     lightboxImg_sshihabb007.src = encodePath(photo.url);
     lightbox_sshihabb007.classList.add('active');
     lightboxImg_sshihabb007.classList.remove('zoomed'); // reset zoom
 }
 
 // Next / Prev functions
-window.changePhoto_sshihabb007 = function(direction, event) {
+window.changePhoto_sshihabb007 = function (direction, event) {
     event.stopPropagation(); // prevent closing lightbox
-    if(filteredPhotos_sshihabb007.length === 0) return;
-    
+    if (filteredPhotos_sshihabb007.length === 0) return;
+
     let newIndex = currentLightboxIndex_sshihabb007 + direction;
     if (newIndex < 0) newIndex = filteredPhotos_sshihabb007.length - 1; // loop backwards
     if (newIndex >= filteredPhotos_sshihabb007.length) newIndex = 0; // loop forwards
-    
+
     openLightbox_sshihabb007(newIndex);
 }
 
@@ -225,7 +225,7 @@ lightboxImg_sshihabb007.addEventListener('click', () => {
 
 // Move zoomed image with mouse
 lightbox_sshihabb007.addEventListener('mousemove', (e) => {
-    if(lightboxImg_sshihabb007.classList.contains('zoomed')) {
+    if (lightboxImg_sshihabb007.classList.contains('zoomed')) {
         const x = (e.clientX / window.innerWidth) * 100;
         const y = (e.clientY / window.innerHeight) * 100;
         lightboxImg_sshihabb007.style.transformOrigin = `${x}% ${y}%`;
@@ -243,6 +243,27 @@ themeToggle_sshihabb007.onclick = () => {
 if (localStorage.getItem('theme') === 'light') {
     document.documentElement.classList.remove('dark');
 }
+
+// 7. Keyboard Navigation
+document.addEventListener('keydown', (e) => {
+    const isLightboxOpen = lightbox_sshihabb007.classList.contains('active');
+    if (!isLightboxOpen) return;
+
+    if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        let newIndex = currentLightboxIndex_sshihabb007 + 1;
+        if (newIndex >= filteredPhotos_sshihabb007.length) newIndex = 0;
+        openLightbox_sshihabb007(newIndex);
+    } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        let newIndex = currentLightboxIndex_sshihabb007 - 1;
+        if (newIndex < 0) newIndex = filteredPhotos_sshihabb007.length - 1;
+        openLightbox_sshihabb007(newIndex);
+    } else if (e.key === 'Escape') {
+        lightbox_sshihabb007.classList.remove('active');
+        lightboxImg_sshihabb007.classList.remove('zoomed');
+    }
+});
 
 // Start
 initGallery_sshihabb007();
