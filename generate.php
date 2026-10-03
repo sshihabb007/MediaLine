@@ -65,5 +65,6 @@ usort($json, function($a, $b) {
 });
 
 file_put_contents("photos.json", json_encode($json, JSON_PRETTY_PRINT));
-echo "Successfully generated photos.json and thumbnails";
+file_put_contents("photos.js", "window.PHOTOS_DATA = " . json_encode($json, JSON_PRETTY_PRINT) . ";\n");
+echo "Successfully generated photos.json, photos.js and thumbnails";
 ?>

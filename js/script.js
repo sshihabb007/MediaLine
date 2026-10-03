@@ -31,16 +31,27 @@ let currentGridClass_sshihabb007 = gridClasses_sshihabb007[6];
 // 1. Fetch, Setup, and Render
 async function initGallery_sshihabb007() {
     try {
-        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-            try { await fetch('generate.php?t=' + Date.now()); } catch (e) { }
+        if (window.location.protocol !== 'file:') {
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                try { await fetch('generate.php?t=' + Date.now()); } catch (e) { }
+            }
+
+            try {
+                const response_sshihabb007 = await fetch('photos.json?t=' + Date.now());
+                if (response_sshihabb007.ok) {
+                    allPhotos_sshihabb007 = await response_sshihabb007.json();
+                }
+            } catch (e) {
+                console.warn("Dynamic fetch failed, falling back to static data if present.", e);
+            }
         }
 
-        const response_sshihabb007 = await fetch('photos.json?t=' + Date.now());
-        if (!response_sshihabb007.ok) throw new Error("JSON not found. Upload photos first!");
+        // Fallback to embedded/script data if fetch did not populate allPhotos (e.g. file:/// protocol)
+        if ((!allPhotos_sshihabb007 || allPhotos_sshihabb007.length === 0) && Array.isArray(window.PHOTOS_DATA)) {
+            allPhotos_sshihabb007 = window.PHOTOS_DATA;
+        }
 
-        allPhotos_sshihabb007 = await response_sshihabb007.json();
-
-        if (allPhotos_sshihabb007.length === 0) {
+        if (!allPhotos_sshihabb007 || allPhotos_sshihabb007.length === 0) {
             gallery_sshihabb007.innerHTML = '<p class="text-center py-20">No photos found in UPLOAD folder.</p>';
             return;
         }
